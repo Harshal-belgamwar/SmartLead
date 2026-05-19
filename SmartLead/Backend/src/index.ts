@@ -26,14 +26,20 @@ app.get('/', (req: Request, res: Response) => {
 app.use(errorHandler);
 
 // Database Connection
-mongoose
-    .connect(process.env.MONGODB_URI as string)
-    .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(port, () => {
-            console.log(`[server]: Server is running at http://localhost:${port}`);
-        });
-    })
-    .catch((error) => {
-        console.error('MongoDB connection error:', error);
+const startServer = async () => {
+    try {
+        const mongoUri = process.env.MONGODB_URI;
+        if (!mongoUri) {
+            throw new Error('MONGODB_URI is not defined in environment variables');
+        }
+        await mongoose_1.default.connect(mongoUri);
+        console.log("Connected to MongoDB");
+    }
+    catch (error) {
+        console.error("MongoDB connection error:", error);
+    }
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
     });
+};
+startServer();
