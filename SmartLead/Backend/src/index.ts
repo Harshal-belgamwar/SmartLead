@@ -32,7 +32,7 @@ const startServer = async () => {
         if (!mongoUri) {
             throw new Error('MONGODB_URI is not defined in environment variables');
         }
-        await mongoose_1.default.connect(mongoUri);
+        await mongoose.default.connect(mongoUri);
         console.log("Connected to MongoDB");
     }
     catch (error) {
